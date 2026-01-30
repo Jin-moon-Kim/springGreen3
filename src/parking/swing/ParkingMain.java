@@ -83,6 +83,6 @@ public class ParkingMain extends JFrame{
 	}
 	
 	public static void main(String[] args) {		
-		new ParkingMain();
+		new ParkingMain();    
 	}
 }
