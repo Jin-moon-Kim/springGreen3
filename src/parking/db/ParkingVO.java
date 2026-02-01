@@ -3,7 +3,7 @@ package parking.db;
 public class ParkingVO {
 	private String plateNum;
 	private String driverName;
-	private int licenseNum;
+	private Long licenseNum;
 	private int driverAddress;
 	private String parkingType;
 	
@@ -19,10 +19,10 @@ public class ParkingVO {
 	public void setDriverName(String driverName) {
 		this.driverName = driverName;
 	}
-	public int getLicenseNum() {
+	public Long getLicenseNum() {
 		return licenseNum;
 	}
-	public void setLicenseNum(int licenseNum) {
+	public void setLicenseNum(Long licenseNum) {
 		this.licenseNum = licenseNum;
 	}
 	public int getDriverAddress() {

@@ -17,7 +17,7 @@ public class ParkingDAO extends DBConn{
 			if(rs.next()) {
 				vo.setPlateNum(plateNum);
 				vo.setDriverName(rs.getString("driver_name"));
-				vo.setLicenseNum(rs.getInt("license_number"));
+				vo.setLicenseNum(rs.getLong("license_number"));
 				vo.setDriverAddress(rs.getInt("driver_address"));
 				vo.setParkingType(rs.getString("parking_type"));
 			}
@@ -33,14 +33,14 @@ public class ParkingDAO extends DBConn{
 		int res = 0;
 		try {
 			sql = "INSERT INTO j_parking_manager (plate_number, driver_name, license_number, driver_address, parking_type) VALUES (?, ?, ?, ?, ?) " +
-          "ON DUPLICATE KEY UPDATE driver_name = VALUES(driver_name), license_number = VALUES(license_number), driver_address = VALUES(driver_address), parking_type = VALUE(Sparking_type))";
+          "ON DUPLICATE KEY UPDATE driver_name = VALUES(driver_name), license_number = VALUES(license_number), driver_address = VALUES(driver_address), parking_type = VALUES(parking_type)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getPlateNum());
 			pstmt.setString(2, vo.getDriverName());
-			pstmt.setInt(3, vo.getLicenseNum());
+			pstmt.setLong(3, vo.getLicenseNum());
 			pstmt.setInt(4, vo.getDriverAddress());
 			pstmt.setString(5, vo.getParkingType());
-			
+			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL error : " + e.getMessage());
 		} finally {

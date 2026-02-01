@@ -209,21 +209,25 @@ public class RegisterCar extends JFrame{
 		String driverName = textFieldDriverName.getText().trim();
 		String licenseNum = textFieldLicenseNum.getText().trim();
 		String address = textFieldAddress.getText().trim();
-		int intLicenseNum = Integer.parseInt(licenseNum);
-		int intAddress = Integer.parseInt(address);
+		
 		String parkingType = comboBox.getSelectedItem()+"";
 		
 		String regExPlateNum = "^\\d{2,3}[가-힣]{1}\\d{4}$";
-		String regExLicenseNum = "^([0-9]{2}-){2}[0-9]{6}-[0-9]{2}$ ";
-		String regExAddress = "^\\d{3}";
+		String regExLicenseNum = "^([0-9]{2}){2}[0-9]{6}[0-9]{2}$";
+		String regExAddress = "^\\d{3}$";
 		
-		if(plateNum.equals("") || driverName.equals("") 
+		if(plateNum.equals("") || driverName.equals("")
 				|| licenseNum.equals("") || address.equals("")) {
-			JOptionPane.showMessageDialog(null, "Please fill out all the required fields.");
+			JOptionPane.showMessageDialog(null, "Please fill out all the required fields.");			
+		}else if(!Pattern.matches(regExPlateNum, plateNum)) {
+			JOptionPane.showMessageDialog(null, "Invalid Plate Number Format");
 			textFieldPlateNum.requestFocus();
-		}else if(!Pattern.matches(regExPlateNum, plateNum) || !Pattern.matches(regExAddress, address)  
-				|| !Pattern.matches(regExLicenseNum, licenseNum)) {
-			JOptionPane.showMessageDialog(null, "Invalid Format");
+		}else if(!Pattern.matches(regExAddress, address)) {
+			JOptionPane.showMessageDialog(null, "Invalid Address Format");
+			textFieldAddress.requestFocus();
+		}else if(!Pattern.matches(regExLicenseNum, licenseNum)) {
+			JOptionPane.showMessageDialog(null, "Invalid License Number Format");
+			textFieldLicenseNum.requestFocus();
 		}else {
 			vo = dao.getCarByPlateNum(plateNum);
 			if(vo.getPlateNum() != null) {
@@ -231,14 +235,19 @@ public class RegisterCar extends JFrame{
 				textFieldPlateNum.requestFocus();
 				//update?
 			}else {
+				long LongLicenseNum = Long.parseLong(licenseNum);
+				int intAddress = Integer.parseInt(address);
+				
 				vo.setPlateNum(plateNum);
 				vo.setDriverName(driverName);
-				vo.setLicenseNum(intLicenseNum);
+				vo.setLicenseNum(LongLicenseNum);
 				vo.setDriverAddress(intAddress);
 				vo.setParkingType(parkingType);
 				
-				int res = dao.upsertCarInfo(vo);
+				System.out.println(vo);
 				
+				int res = dao.upsertCarInfo(vo);
+				System.out.println(res);
 				if(res !=0) {
 					JOptionPane.showMessageDialog(null, "a new car aproved");
 					try {
@@ -249,8 +258,7 @@ public class RegisterCar extends JFrame{
 				}
 			}
 		}
-	}
-	
+	}	
 	public static void main(String[] args) {		
 		new RegisterCar();
 	}
